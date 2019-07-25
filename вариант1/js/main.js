@@ -281,7 +281,11 @@ var gameOver =
             var stringScore = me.score;
             var stringH = parseInt(localStorage.getItem('highScore'));
             localStorage.setItem('score', stringScore);
-            localStorage.setItem('highscore', stringH);
+            if(stringH === NaN) {
+                localStorage.setItem('highscore', '0');
+            }else{
+                localStorage.setItem('highscore', stringH);
+            }
             console.log(parseInt(stringScore));
             console.log(parseInt(stringH));
 
