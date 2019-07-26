@@ -23,6 +23,7 @@ Preload.prototype = {
 		this.game.load.image('logo', 'assets/images/donuts_logo.png');
 		this.game.load.image('playButton', 'assets/images/btn-play.png');
 		this.game.load.image('musicButton', 'assets/images/btn-sfx.png');
+		this.game.load.image('particle', 'assets/images/particles/particle_ex1.png');
         this.game.load.bitmapFont('myFont', 'assets/font/font.png', 'assets/font/font.xml');
         this.game.load.image('backg', 'assets/images/BACK.png');
         this.game.load.audio('backVoice', 'assets/audio/background.mp3');
@@ -38,7 +39,14 @@ Preload.prototype = {
 
 	create: function(){
         game.music = this.game.add.audio('backVoice',true, true);
+        game.select = this.game.add.audio('select1', true);
+        game.kill = this.game.add.audio('killGem', true);
+        game.selectButtons = this.game.add.audio('select2', true);
+
         game.music.play();
+        game.music.paused = false;
+        game.musicPause = true;
+        game.showHelp = false;
         // this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT ;
         // this.game.scale.pageAlignHorizontally = true;
         // this.game.scale.pageAlignVertically = true;
