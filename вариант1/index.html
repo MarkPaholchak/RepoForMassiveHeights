@@ -1,17 +1,17 @@
-<!doctype html> 
-<html lang="en"> 
-<head> 
-	<meta charset="UTF-8" />
-	<title>Match-3</title>
-	<link rel="stylesheet" href="main.css">
-	<link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
-	<script type="text/javascript" src="assets/phaser.min.js"></script>
-	<script type="text/javascript" src="js/boot.js"></script>
-	<script type="text/javascript" src="js/preload.js"></script>
-	<script type="text/javascript" src="js/gametitle.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/tutorial.js"></script>
-	<script type="text/javascript" src="js/gameover.js"></script>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Match-3</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="assets/phaser.min.js"></script>
+    <script type="text/javascript" src="js/boot.js"></script>
+    <script type="text/javascript" src="js/preload.js"></script>
+    <script type="text/javascript" src="js/gametitle.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/tutorial.js"></script>
+    <script type="text/javascript" src="js/gameover.js"></script>
 
     <style type="text/css">
         body {
@@ -19,22 +19,22 @@
         }
     </style>
     <script type="text/javascript">
-		(function() {
+        (function () {
 
-            	game = new Phaser.Game(820, 960, Phaser.CANVAS, 'gameArea' );
-				//Add all states
-				game.state.add("Boot", Boot);
-				game.state.add("Preload", Preload);
-				game.state.add("GameTitle", GameTitle);
-				game.state.add("Main", Main);
-				game.state.add("Tutorial", Tutorial);
-				game.state.add("GameOver", GameOver);
+            game = new Phaser.Game(820, 960, Phaser.CANVAS, 'gameArea');
+            //Add all states
+            game.state.add("Boot", Boot);
+            game.state.add("Preload", Preload);
+            game.state.add("GameTitle", GameTitle);
+            game.state.add("Main", Main);
+            game.state.add("Tutorial", Tutorial);
+            game.state.add("GameOver", GameOver);
 
 
-				//Start the first state
-				game.state.start("Boot");
+            //Start the first state
+            game.state.start("Boot");
 
-		})();
+        })();
     </script>
 </head>
 <body>

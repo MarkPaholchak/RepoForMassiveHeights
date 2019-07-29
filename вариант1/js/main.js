@@ -20,7 +20,7 @@ Main.prototype = {
         me.score = 0;
         me.highScore = 0;
 
-        me.emmiter = game.add.emitter(0,0,100);
+        me.emmiter = game.add.emitter(0, 0, 100);
         me.emmiter.makeParticles('particle');
         me.emmiter.gravity = 200;
 
@@ -30,9 +30,9 @@ Main.prototype = {
         me.canMove = false;
         me.musicPause = game.music.paused;
 
-        if(game.musicPause === true){
+        if (game.musicPause === true) {
             game.music.paused = true;
-        }else {
+        } else {
             game.music.paused = false;
         }
 
@@ -89,7 +89,7 @@ Main.prototype = {
         me.createScore();
 
         var me = this;
-
+        me.tweens = new Phaser.TweenManager(game);
 
         me.startTime = new Date();
         me.totalTime = 30;
@@ -141,7 +141,7 @@ Main.prototype = {
                 font: '100px Fredoka One',
                 fill: '#fff'
             });
-            if (game.showHelp){
+            if (game.showHelp) {
                 choise3.text = 'HELP:ON';
             } else {
                 choise3.text = 'HELP:OFF';
@@ -156,7 +156,7 @@ Main.prototype = {
                 font: '100px Fredoka One',
                 fill: '#fff'
             });
-            if(game.musicPause) {
+            if (game.musicPause) {
                 game.music.pause();
                 choise4.text = 'MUSIC:OFF';
             } else {
@@ -171,13 +171,13 @@ Main.prototype = {
         });
 
         game.input.onDown.add(me.unpause, self);
-        game.input.onDown.add(me.particleBurst, me);
-
-        if (game.showHelp){
+        if (game.showHelp) {
             me.showSuggestion();
-        }
-        // me.showSuggestion();
-        console.log(me);
+        };
+
+        me.emmiter = game.add.emitter(0, 0, 100);
+        me.emmiter.makeParticles('particle');
+        me.emmiter.gravity = 200;
 
     },
 
@@ -188,27 +188,30 @@ Main.prototype = {
         me.countDownTimer();
         // if (me.timeElapsed >= me.totalTime) {
         //     setTimeout(this.game.state.start('GameOver'), 3000);
-        // }
-        // ;
-        if(!game.showHelp){
+        // };
+        if (!game.showHelp) {
             me.hand.visible = false;
         }
 
         if (me.tile1 && !me.tile2) {
-            if(game.musicPause === false){
+            if (game.musicPause === false) {
                 game.select.play();
             }
+            ;
             me.hand.visible = false;
-            if (game.showHelp && me.handTween){
+            me.tiles.moveUp(me.tile1);
+            if (game.showHelp && me.handTween) {
                 me.handTween.stop();
             }
-            me.tile1.z +=100;
-            me.tileTween = game.add.tween(me.tile1.scale).to({
-                x: me.tile1.scale.x + 0.5,
-                y: me.tile1.scale.y + 0.5
-            },500, Phaser.Easing.Linear.None, true, 0, 1000, true);
+            ;
+            me.emmiter.start(false,0, 100);
 
-
+            me.tile1.scale.x += 0.01;
+            me.tile1.scale.y += 0.01;
+            if (me.tile1.scale.x > 1.5) {
+                me.game.add.tween(me.tile1.scale).to({x: 1, y: 1}, 500, Phaser.Easing.Linear.In, true);
+            }
+            ;
 
             var hoverX = me.game.input.x - 40;
             var hoverY = me.game.input.y - 160;
@@ -220,14 +223,13 @@ Main.prototype = {
             var difY = (hoverPosY - me.startPosY);
             if (!(hoverPosY > me.tileGrid[0].length - 1 || hoverPosY < 0) && !(hoverPosX > me.tileGrid.length - 1 || hoverPosX < 0)) {
                 if ((Math.abs(difY) == 1 && difX == 0) || (Math.abs(difX) == 1 && difY == 0)) {
+                    // me.tile1.scale.x = 1;
+                    // me.tile1.scale.y = 1;
+                    me.game.add.tween(me.tile1.scale).to({x: 1, y: 1}, 500, Phaser.Easing.Linear.In, true);
                     me.canMove = false;
                     me.tile2 = me.tileGrid[hoverPosX][hoverPosY];
                     me.emmiter.kill();
-                    if(me.tileTween){
-                        game.tweens.removeFrom(me.tile1.scale);
-                        // me.tileTween.remove();
-                        me.tile1.scale = game.tileScale;
-                    }
+
                     me.swapTiles();
                     me.game.time.events.add(500, function () {
                         me.checkMatch();
@@ -283,10 +285,10 @@ Main.prototype = {
                 clearInterval(myInt);
                 this.game.state.start('GameTitle');
             } else if (event.x > x5 && event.x < x6 && event.y > y5 && event.y < y6) {
-                if (game.showHelp){
+                if (game.showHelp) {
                     game.showHelp = false;
                     choise3.text = 'HELP:OFF';
-                }else {
+                } else {
                     game.showHelp = true;
                     choise3.text = 'HELP:ON';
                 }
@@ -303,18 +305,16 @@ Main.prototype = {
                 }
             }
             else {
-                // Remove the menu and the label
                 choiseLabel.destroy();
                 choise1.destroy();
                 choise2.destroy();
                 choise3.destroy();
                 choise4.destroy();
                 menu.destroy();
-                if (game.showHelp){
+                if (game.showHelp) {
                     me.showSuggestion;
                 }
-                // me.showSuggestion();
-                // Unpause the game
+                ;
                 game.paused = false;
             }
         }
@@ -351,9 +351,6 @@ Main.prototype = {
 
         var me = this;
 
-        // me.timeLabel = me.game.add.bitmapText(250, 600, 'myFont', '0', 80);
-        // me.timeLabel.anchor.setTo(0.5, -0.5);
-        // me.timeLabel.align = 'center';
 
         me.timeLabel = me.game.add.text(me.game.world.centerX + 150, 860, "00:00", {
             font: "80px Fredoka One",
@@ -385,7 +382,6 @@ Main.prototype = {
         if (stringH < stringScore) {
             me.highScore = me.score;
             localStorage.setItem('highScore', stringScore);
-            console.log(localStorage.getItem('highScore'))
         }
         ;
         clearInterval(myInt);
@@ -399,35 +395,12 @@ Main.prototype = {
         if (me.canMove) {
 
             me.tile1 = tile;
-            var stringScaleTaile = JSON.stringify(me.tile1.scale);
-            var stringScaleGame = JSON.stringify(game.tileScale);
-            console.log(stringScaleTaile == stringScaleGame)
-            if(stringScaleTaile == stringScaleGame){
-                me.tileTween = game.add.tween(me.tile1.scale).to({
-                    x: 1.5,
-                    y: 1.5
-                },500, Phaser.Easing.Linear.None, true, 0, -1, true);
-            };
 
-            // game.input.onDown.add(me.particleBurst, me);
 
             me.startPosX = (tile.x - me.tileWidth / 2) / me.tileWidth;
             me.startPosY = (tile.y - me.tileHeight / 2) / me.tileHeight;
 
         }
-
-    },
-    particleBurst: function(pointer) {
-        var me = this;
-
-        me.emmiter.x = pointer.x;
-        me.emmiter.y = pointer.y;
-        me.emmiter.z = 1000;
-
-        me.emmiter.start(false, 4000, 200);
-
-        //  And 2 seconds later we'll destroy the emitter
-        // game.time.events.add(2000, destroyEmitter, this);
 
     },
 
@@ -464,16 +437,10 @@ Main.prototype = {
         tile.anchor.setTo(0.45, 0.35);
         tile.inputEnabled = true;
         tile.tileType = tileToAdd;
-        game.tileScale = tile.scale;
         tile.events.onInputDown.add(me.tileDown, me);
         var shadowSpite = game.add.sprite(-6, -10, tileToAdd);
-        // var shadow = me.shadowTiles.create(6,10,'shadow');
-        // shadow.anchor.setTo(0.45, 0.35);
-
         shadowSpite.anchor.setTo(0.45, 0.35);
-        // game.world.bringToTop(me.tiles);
         tile.addChild(shadowSpite);
-        // shadowSpite.addChild(me.emmiter);
         return tile;
 
     },
@@ -510,9 +477,11 @@ Main.prototype = {
 
     },
     tileUp: function () {
-
-        //Reset the active tiles
         var me = this;
+
+
+        // me.tile1.scale = game.tileScale;
+
         me.tile1 = null;
         me.tile2 = null;
 
@@ -537,13 +506,14 @@ Main.prototype = {
 
     removeTileGroup: function (matches) {
         var me = this;
-        if(game.musicPause === false){
+        if (game.musicPause === false) {
             game.kill.play();
         }
         // game.kill.play();
-        if (game.showHelp && me.handTween){
+        if (game.showHelp && me.handTween) {
             me.handTween.stop();
-        };
+        }
+        ;
         // me.handTween.stop();
 
         console.log('stoped');
@@ -553,9 +523,7 @@ Main.prototype = {
                 var tile = tempArr[j];
                 var tilePos = me.getTilePos(me.tileGrid, tile);
                 me.tiles.remove(tile);
-                //Increase the users score
                 me.incrementScore();
-                //Remove the tile from the theoretical grid
                 if (tilePos.x != -1 && tilePos.y != -1) {
                     me.tileGrid[tilePos.x][tilePos.y] = null;
                 }
@@ -756,10 +724,10 @@ Main.prototype = {
             me.game.time.events.add(500, function () {
                 me.tileUp();
                 me.canMove = true;
-                if (game.showHelp){
+                if (game.showHelp) {
                     me.showSuggestion();
                 }
-                // me.showSuggestion();
+                ;
             });
         }
 
@@ -805,7 +773,7 @@ Main.prototype = {
         }
         ;
 
-        if (game.showHelp && me.handTween){
+        if (game.showHelp && me.handTween) {
             me.handTween.stop();
         }
         // me.handTween.stop();

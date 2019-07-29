@@ -51,6 +51,8 @@ GameTitle.prototype = {
         me.helpp.events.onInputUp.add(function () {
             me.helpOf();
         });
+        game.tileScale = me.helpp.scale;
+        console.log(game.tileScale);
 
         // me.music = game.add.audio('backVoice');
         // me.music.play();
@@ -58,10 +60,11 @@ GameTitle.prototype = {
     },
     update: function () {
         var me = this;
-        var pButton = game.add.button(game.world.centerX, 450, 'playButton', me.startGame, this, 2, 1, 0);
-        pButton.anchor.setTo(0.5, 0.5);
-        pButton.width = 400;
-        pButton.height = 200;
+        me.pButton = game.add.button(game.world.centerX, 450, 'playButton', me.startGame, this, 2, 1, 0);
+        me.pButton.anchor.setTo(0.5, 0.5);
+        me.pButton.width = 400;
+        me.pButton.height = 200;
+
         // var mButton = game.add.button(game.world.centerX + 290, 800, 'musicButton', me.musicOf, this, 2, 1, 0);
         // mButton.anchor.setTo(0.5, 0.5);
         // mButton.width = 150;
@@ -71,12 +74,17 @@ GameTitle.prototype = {
     },
 
     startGame: function () {
+        var me = this;
+
+        console.log(me.musiccc.scale);
         game.music.paused = game.musicPause;
         this.game.state.start("Main");
+
     },
 
     musicOf: function () {
         var me = this;
+
         if (game.musicPause) {
             me.musiccc.text = 'MUSIC:ON';
             game.music.play();

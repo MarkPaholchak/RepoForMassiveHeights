@@ -139,7 +139,7 @@ Tutorial.prototype = {
                 game.select.play();
             }
 
-            
+
 
 
             var hoverX = me.game.input.x - 150;
